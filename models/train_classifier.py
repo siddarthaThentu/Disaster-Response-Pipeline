@@ -18,7 +18,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-db_name = 'postgresql://hyjeoyyisyahqy:794f9c1fa282a80697e89b0fa2cd24cc08808984c0d2280ee7cbff6f4a911a69@ec2-54-197-100-79.compute-1.amazonaws.com:5432/d6rf827scnq3ud'
+db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     """
