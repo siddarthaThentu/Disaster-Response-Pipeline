@@ -1,11 +1,11 @@
 import sys
-import nltk
-nltk.download(['punkt', 'wordnet','averaged_perceptron_tagger'])
+# import nltk
+# nltk.download(['punkt', 'wordnet','averaged_perceptron_tagger'])
 import pandas as pd
 import numpy as np
 import pickle
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+# from nltk.stem import WordNetLemmatizer
+# from nltk.tokenize import word_tokenize
 from sqlalchemy import create_engine
 import re
 from sklearn.metrics import classification_report,accuracy_score
@@ -16,6 +16,8 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
+
+from ../token import tokenize
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
@@ -59,24 +61,24 @@ def load_data(database_filepath):
     print(Y)
     return X,Y,category_names
 
-def tokenize(text):
+# def tokenize(text):
     
-    detected_urls = re.findall(url_regex, text)
-    for url in detected_urls:
-        text = text.replace(url, "urlplaceholder")
+#     detected_urls = re.findall(url_regex, text)
+#     for url in detected_urls:
+#         text = text.replace(url, "urlplaceholder")
     
-    # tokenizing
-    tokens = word_tokenize(text)
+#     # tokenizing
+#     tokens = word_tokenize(text)
     
-    # lemmatizing
-    lemmatizer = WordNetLemmatizer()
+#     # lemmatizing
+#     lemmatizer = WordNetLemmatizer()
     
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
+#     clean_tokens = []
+#     for tok in tokens:
+#         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+#         clean_tokens.append(clean_tok)
 
-    return clean_tokens
+#     return clean_tokens
 
 
 def build_model():
