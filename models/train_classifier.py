@@ -23,27 +23,27 @@ from tokenFile import tokenize
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
 
-class StartingVerbExtractor(BaseEstimator, TransformerMixin):
-    """
-    This class extract the starting verb of a sentence,
-    creating a new feature for the ML classifier
-    """
+# class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+#     """
+#     This class extract the starting verb of a sentence,
+#     creating a new feature for the ML classifier
+#     """
 
-    def starting_verb(self, text):
-        sentence_list = nltk.sent_tokenize(text)
-        for sentence in sentence_list:
-            pos_tags = nltk.pos_tag(sentence.split())
-            first_word, first_tag = pos_tags[0]
-            if first_tag in ['VB', 'VBP'] or first_word == 'RT':
-                return True
-        return False
+#     def starting_verb(self, text):
+#         sentence_list = nltk.sent_tokenize(text)
+#         for sentence in sentence_list:
+#             pos_tags = nltk.pos_tag(sentence.split())
+#             first_word, first_tag = pos_tags[0]
+#             if first_tag in ['VB', 'VBP'] or first_word == 'RT':
+#                 return True
+#         return False
 
-    def fit(self, x, y=None):
-        return self
+#     def fit(self, x, y=None):
+#         return self
 
-    def transform(self, X):
-        X_tagged = pd.Series(X).apply(self.starting_verb)
-        return pd.DataFrame(X_tagged)
+#     def transform(self, X):
+#         X_tagged = pd.Series(X).apply(self.starting_verb)
+#         return pd.DataFrame(X_tagged)
 
 def load_data(database_filepath):
     
@@ -85,15 +85,17 @@ def load_data(database_filepath):
 def build_model():
     
     pipeline = Pipeline([
-        ('features', FeatureUnion([
+        #('features', FeatureUnion([
 
-            ('text_pipeline', Pipeline([
+            #('text_pipeline', Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
-                ('tfidf', TfidfTransformer())
-            ])),
+                ('tfidf', TfidfTransformer()),
+            #])
+            #)
+            # ,
 
-            ('starting_verb', StartingVerbExtractor())
-        ])),
+            # ('starting_verb', StartingVerbExtractor())
+        #])),
 
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
