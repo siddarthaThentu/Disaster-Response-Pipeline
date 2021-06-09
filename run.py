@@ -2,7 +2,7 @@ import json
 import plotly
 import pandas as pd
 
-from tokenFile import tokenize
+from tokenFile import tokenize,StartingVerbExtractor
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from flask import Flask
@@ -13,43 +13,10 @@ import joblib
 from sqlalchemy import create_engine
 import re
 
-import nltk
-from nltk import sent_tokenize
-from nltk import pos_tag
-
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 app = Flask(__name__)
 
-# class StartingVerbExtractor(BaseEstimator, TransformerMixin):
-
-#     def starting_verb(self, text):
-#         sentence_list = nltk.sent_tokenize(text)
-#         for sentence in sentence_list:
-#             pos_tags = nltk.pos_tag(sentence.split())
-#             first_word, first_tag = pos_tags[0]
-#             if first_tag in ['VB', 'VBP'] or first_word == 'RT':
-#                 return True
-#         return False
-
-#     def fit(self, x, y=None):
-#         return self
-
-#     def transform(self, X):
-#         X_tagged = pd.Series(X).apply(self.starting_verb)
-#         return pd.DataFrame(X_tagged)
-
-# class tokenizer(BaseEstimator, TransformerMixin):
-#     def __init__(self):
-#         pass
-
-#     def fit(self, X, y=None):
-#         return self
-
-#     def transform(self, X):
-
-
-        #return pd.Series(X).apply(tokenize).values
 # load data
 engine = create_engine(db_name)
 conn = engine.connect()

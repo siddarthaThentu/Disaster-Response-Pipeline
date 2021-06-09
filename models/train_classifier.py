@@ -14,36 +14,14 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tokenFile import tokenize
+from tokenFile import tokenize,StartingVerbExtractor
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
 
-# class StartingVerbExtractor(BaseEstimator, TransformerMixin):
-#     """
-#     This class extract the starting verb of a sentence,
-#     creating a new feature for the ML classifier
-#     """
-
-#     def starting_verb(self, text):
-#         sentence_list = nltk.sent_tokenize(text)
-#         for sentence in sentence_list:
-#             pos_tags = nltk.pos_tag(sentence.split())
-#             first_word, first_tag = pos_tags[0]
-#             if first_tag in ['VB', 'VBP'] or first_word == 'RT':
-#                 return True
-#         return False
-
-#     def fit(self, x, y=None):
-#         return self
-
-#     def transform(self, X):
-#         X_tagged = pd.Series(X).apply(self.starting_verb)
-#         return pd.DataFrame(X_tagged)
 
 def load_data(database_filepath):
     
@@ -85,18 +63,16 @@ def load_data(database_filepath):
 def build_model():
     
     pipeline = Pipeline([
-        #('features', FeatureUnion([
+        ('features', FeatureUnion([
 
-            #('text_pipeline', Pipeline([
+            ('text_pipeline', Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
                 ('tfidf', TfidfTransformer()),
-            #])
-            #)
-            # ,
+            ])
+            ),
 
-            # ('starting_verb', StartingVerbExtractor())
-        #])),
-
+            ('starting_verb', StartingVerbExtractor())
+        ])),
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
