@@ -1,11 +1,12 @@
 import sys
-# import nltk
-# nltk.download(['punkt', 'wordnet','averaged_perceptron_tagger'])
+import os
+import nltk
+nltk.download(['punkt', 'wordnet','averaged_perceptron_tagger'])
 import pandas as pd
 import numpy as np
 import pickle
-# from nltk.stem import WordNetLemmatizer
-# from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 from sqlalchemy import create_engine
 import re
 from sklearn.metrics import classification_report,accuracy_score
@@ -16,8 +17,8 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
-
-from ../tokenFile import tokenize
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tokenFile import tokenize
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
@@ -31,7 +32,7 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def starting_verb(self, text):
         sentence_list = nltk.sent_tokenize(text)
         for sentence in sentence_list:
-            pos_tags = nltk.pos_tag(tokenize(sentence))
+            pos_tags = nltk.pos_tag(sentence.split())
             first_word, first_tag = pos_tags[0]
             if first_tag in ['VB', 'VBP'] or first_word == 'RT':
                 return True

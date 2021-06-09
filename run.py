@@ -13,6 +13,10 @@ import joblib
 from sqlalchemy import create_engine
 import re
 
+import nltk
+from nltk import sent_tokenize
+from nltk import pos_tag
+
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 app = Flask(__name__)

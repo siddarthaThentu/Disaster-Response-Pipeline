@@ -1,3 +1,4 @@
+import re
 import nltk
 nltk.download('stopwords')
 from nltk.stem import WordNetLemmatizer
@@ -25,4 +26,4 @@ def tokenize(text):
     STOPWORDS = list(set(stopwords.words('english')))
     clean_tokens = [token for token in clean_tokens if token not in STOPWORDS]
 
-    return ' '.join(clean_tokens)
+    return clean_tokens
