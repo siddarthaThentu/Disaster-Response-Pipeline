@@ -17,7 +17,7 @@ import joblib
 from sqlalchemy import create_engine
 import re
 
-
+db_name = 'postgresql://hyjeoyyisyahqy:794f9c1fa282a80697e89b0fa2cd24cc08808984c0d2280ee7cbff6f4a911a69@ec2-54-197-100-79.compute-1.amazonaws.com:5432/d6rf827scnq3ud'
 app = Flask(__name__)
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
@@ -73,8 +73,9 @@ def tokenize(text):
     #return pd.Series(X).apply(tokenize).values
 
 # load data
-engine = create_engine('sqlite:///data/DisasterResponse.db')
-df = pd.read_sql_table('DisasterResponse', engine)
+engine = create_engine(db_name)
+conn = engine.connect()
+df = pd.read_sql("select * from \"DisasterResponse\"",conn)
 
 # load model
 model = joblib.load("models/classifier.pkl")
