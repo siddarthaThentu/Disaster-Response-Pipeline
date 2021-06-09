@@ -7,3 +7,4 @@ plotly
 nltk
 sklearn
 joblib
+gunicorn
