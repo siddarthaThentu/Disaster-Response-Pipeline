@@ -76,8 +76,7 @@ def build_model():
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
-    parameters = { 'clf__estimator__n_estimators' : [50] }
-    #,60,70,80
+    parameters = { 'clf__estimator__n_estimators' : [50,60,70,80] }
     model = GridSearchCV(pipeline, param_grid=parameters)
 
     return model
