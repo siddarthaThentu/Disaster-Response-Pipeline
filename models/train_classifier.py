@@ -95,7 +95,8 @@ def build_model():
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
-    parameters = { 'clf__estimator__n_estimators' : [50,60,70,80] }
+    parameters = { 'clf__estimator__n_estimators' : [80] }
+    #50,60,70,
     model = GridSearchCV(pipeline, param_grid=parameters)
 
     return model
@@ -119,7 +120,8 @@ def save_model(model, model_filepath):
 def main():
     if len(sys.argv) == 2:
         database_filepath = db_name
-        model_filepath = sys.argv[1:]
+        model_filepath = sys.argv[1]
+        print("model_filepath = ",model_filepath)
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
