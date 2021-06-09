@@ -160,9 +160,9 @@ def go():
     )
 
 
-def main():
-    app.run(port=5000, debug=True)
+# def main():
+#     app.run(port=5000, debug=True)
 
 
 if __name__ == '__main__':
-    main()
+    app.run()
