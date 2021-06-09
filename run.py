@@ -39,7 +39,7 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
 
-class Tokenizer(BaseEstimator, TransformerMixin):
+class tokenizer(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
 
