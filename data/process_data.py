@@ -1,6 +1,9 @@
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
+import psycopg2
+
+db_name = 'postgresql://hyjeoyyisyahqy:794f9c1fa282a80697e89b0fa2cd24cc08808984c0d2280ee7cbff6f4a911a69@ec2-54-197-100-79.compute-1.amazonaws.com:5432/d6rf827scnq3ud'
 
 def load_data(messages_filepath, categories_filepath):
     """ 
@@ -60,7 +63,7 @@ def clean_data(df):
     return cleaned_df
 
 
-def save_data(df, database_filename):
+def save_data(df, database_filename=db_name):
     """ 
     Save To Database Method. 
   
@@ -71,15 +74,27 @@ def save_data(df, database_filename):
     database_filename (str) : Filename Of Database.
   
     """
-    db_name = 'sqlite:///{}'.format(database_filename)
-    engine = create_engine(db_name)
-    df.to_sql('DisasterResponse', engine, index=False)  
+    #db_name = 'sqlite:///{}'.format(database_filename)
+    
+    engine = create_engine(database_filename)
+    conn = engine.connect()
+    table_name = 'DisasterResponse'
+    #df.to_sql('DisasterResponse', engine, index=False)  
+    try:
+        df.to_sql(table_name,conn)
+    except Exception as e:
+        print(e)
+    else:
+        print("Table created succesfully")
+    finally:
+        conn.close()
 
 
 def main():
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 3:
 
-        messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
+        messages_filepath, categories_filepath = sys.argv[1:]
+        database_filepath = db_name
 
         print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
               .format(messages_filepath, categories_filepath))

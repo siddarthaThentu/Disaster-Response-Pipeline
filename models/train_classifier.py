@@ -18,6 +18,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+db_name = 'postgresql://hyjeoyyisyahqy:794f9c1fa282a80697e89b0fa2cd24cc08808984c0d2280ee7cbff6f4a911a69@ec2-54-197-100-79.compute-1.amazonaws.com:5432/d6rf827scnq3ud'
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     """
@@ -43,16 +44,19 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 
 def load_data(database_filepath):
     
-    db_name = 'sqlite:///{}'.format(database_filepath)
+    #db_name = 'sqlite:///{}'.format(database_filepath)
     engine = create_engine(db_name)
-    
-    df = pd.read_sql_table('DisasterResponse',engine)
+    conn = engine.connect()
+    table_name = 'DisasterResponse'
+
+    df = pd.read_sql("select * from \"DisasterResponse\"",conn)
     
     X = df['message'].values
-    Y = df.iloc[:,4:]
+    Y = df.iloc[:,5:]
 
     category_names = list(Y.columns)
     
+    print(Y)
     return X,Y,category_names
 
 def tokenize(text):
@@ -113,8 +117,9 @@ def save_model(model, model_filepath):
 
 
 def main():
-    if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
+    if len(sys.argv) == 2:
+        database_filepath = db_name
+        model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
