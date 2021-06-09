@@ -38,7 +38,7 @@ def load_data(database_filepath):
     category_names = list(Y.columns)
     
     print(Y)
-    return X[:5000],Y[:5000],category_names
+    return X,Y,category_names
 
 # def tokenize(text):
     
