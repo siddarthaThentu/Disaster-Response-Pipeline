@@ -17,7 +17,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
 
-from ../token import tokenize
+from ../tokenFile import tokenize
 
 url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
@@ -59,7 +59,7 @@ def load_data(database_filepath):
     category_names = list(Y.columns)
     
     print(Y)
-    return X,Y,category_names
+    return X[:5000],Y[:5000],category_names
 
 # def tokenize(text):
     
@@ -97,7 +97,7 @@ def build_model():
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
-    parameters = { 'clf__estimator__n_estimators' : [80] }
+    parameters = { 'clf__estimator__n_estimators' : [40] }
     #50,60,70,
     model = GridSearchCV(pipeline, param_grid=parameters)
 
