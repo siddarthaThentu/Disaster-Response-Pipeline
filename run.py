@@ -78,7 +78,7 @@ conn = engine.connect()
 df = pd.read_sql("select * from \"DisasterResponse\"",conn)
 
 # load model
-model = joblib.load("models/classifier.pkl")
+model = joblib.load("models/classifier2.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
