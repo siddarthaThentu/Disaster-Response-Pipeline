@@ -18,6 +18,7 @@ from sqlalchemy import create_engine
 import re
 
 db_name = 'postgresql://tqdqfmxgrgunzx:a6d3564a45d7148a5e09817cead82db91e8b431f7521be123af79c92afd0d92c@ec2-54-91-188-254.compute-1.amazonaws.com:5432/d7saa2toh2oscb'
+url_regex = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 app = Flask(__name__)
 
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
@@ -38,40 +39,39 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
 
-# class Whatever(BaseEstimator, TransformerMixin):
-#     def __init__(self):
-#         pass
+class Tokenizer(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
 
-#     def fit(self, X, y=None):
-#         return self
+    def fit(self, X, y=None):
+        return self
 
-#     def transform(self, X):
+    def transform(self, X):
 
-def tokenize(text):
-
+        def tokenize(text):
+  
             # Define url pattern
-    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+            url_re = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 
             # Detect and replace urls
-    detected_urls = re.findall(url_regex, text)
-    for url in detected_urls:
-        text = text.replace(url, "urlplaceholder")
+            detected_urls = re.findall(url_re, text)
+            for url in detected_urls:
+                text = text.replace(url, "urlplaceholder")
 
             # tokenize sentences
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
+            tokens = word_tokenize(text)
+            lemmatizer = WordNetLemmatizer()
 
             # save cleaned tokens
-    clean_tokens = [lemmatizer.lemmatize(tok).lower().strip() for tok in tokens]
+            clean_tokens = [lemmatizer.lemmatize(tok).lower().strip() for tok in tokens]
 
             # remove stopwords
-    STOPWORDS = list(set(stopwords.words('english')))
-    clean_tokens = [token for token in clean_tokens if token not in STOPWORDS]
+            STOPWORDS = list(set(stopwords.words('english')))
+            clean_tokens = [token for token in clean_tokens if token not in STOPWORDS]
 
-            #return ' '.join(clean_tokens)
-    return clean_tokens
-    #return pd.Series(X).apply(tokenize).values
+            return ' '.join(clean_tokens)
 
+        return pd.Series(X).apply(tokenize).values
 # load data
 engine = create_engine(db_name)
 conn = engine.connect()
