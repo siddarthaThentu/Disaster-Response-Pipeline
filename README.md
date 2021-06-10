@@ -1,7 +1,10 @@
 # Disaster Response Pipeline Project
 
+[homepage](screenshots/homepage.PNG)
+
+##Description
 ### Instructions:
-1. Clone the repository by executing <code>git clone https://github.com/siddarthaThentu/Disaster-Response-Pipeline.git_<code>
+1. Clone the repository by executing <code>git clone https://github.com/siddarthaThentu/Disaster-Response-Pipeline.git<code>
 
 2. Run the following commands in the project's root directory to set up your database and model.
 
