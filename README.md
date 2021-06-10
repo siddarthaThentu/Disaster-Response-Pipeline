@@ -12,7 +12,7 @@ Responding to diasters is an important task that needs to be quick and efficient
 There are 3 major componenets in this project
 1. An ETL pipeline that extracts the data, cleans it and loads it into a postgres database.
 2. A ML/NLP pipeline that loads the data from the database, performs training and optimizing operations to generate a model.
-3. A web app, that takes new incoming messages, feed them to the trained model, predict the category of the message and display it on the UI.
+3. A web app, that takes new incoming messages, feed them to the trained model, predict the category of the message and displays it on the UI.
 
 ## Dependencies
 
